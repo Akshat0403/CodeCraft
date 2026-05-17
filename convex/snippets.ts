@@ -84,7 +84,8 @@ export const starSnippet = mutation({
       .withIndex("by_user_id_and_snippet_id")
       .filter(
         (q) =>
-          q.eq(q.field("userId"), identity.subject) && q.eq(q.field("snippetId"), args.snippetId)
+          q.eq(q.field("userId"), identity.subject) &&
+          q.eq(q.field("snippetId"), args.snippetId),
       )
       .first();
 
@@ -187,7 +188,8 @@ export const isSnippetStarred = query({
       .withIndex("by_user_id_and_snippet_id")
       .filter(
         (q) =>
-          q.eq(q.field("userId"), identity.subject) && q.eq(q.field("snippetId"), args.snippetId)
+          q.eq(q.field("userId"), identity.subject) &&
+          q.eq(q.field("snippetId"), args.snippetId),
       )
       .first();
 
@@ -219,7 +221,9 @@ export const getStarredSnippets = query({
       .filter((q) => q.eq(q.field("userId"), identity.subject))
       .collect();
 
-    const snippets = await Promise.all(stars.map((star) => ctx.db.get(star.snippetId)));
+    const snippets = await Promise.all(
+      stars.map((star) => ctx.db.get(star.snippetId)),
+    );
 
     return snippets.filter((snippet) => snippet !== null);
   },
